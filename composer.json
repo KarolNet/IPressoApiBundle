@@ -1,0 +1,23 @@
+{
+  "name": "karolnet/IPressoApiBundle",
+  "description": "Ipresso api integration for Symfony",
+  "license": "MIT",
+  "type": "symfony-bundle",
+  "authors": [
+    {
+      "name": "Karol Grochowalski",
+      "email": "karol.grochowalski@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=5.3.3",
+    "guzzlehttp/guzzle": "^6.1"
+  },
+  "autoload": {
+    "psr-4": { "KarolNet\\IPressoApiBundle\\": "" }
+  },
+  "require-dev": {
+    "phpunit/phpunit" : "~4.8"
+  }
+}
