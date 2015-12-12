@@ -1,8 +1,9 @@
 <?php
 
-namespace KarolNet\IPressoApiBundle\Service;
+namespace KarolNet\IPressoApiBundle\IPressoIntegration;
 
 use GuzzleHttp\Client;
+use KarolNet\Model\IPressoContactInterface;
 
 class IPressoApi
 {
@@ -34,5 +35,20 @@ class IPressoApi
         ]);
 
         return $res->getStatusCode();
+    }
+
+    public function addContact(IPressoContactInterface $contact)
+    {
+
+    }
+
+    public function findContactBy(array $criteria)
+    {
+
+    }
+
+    public function updateContact($externalId, IPressoContactInterface $contact)
+    {
+
     }
 }

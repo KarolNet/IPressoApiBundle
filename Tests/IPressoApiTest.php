@@ -2,7 +2,7 @@
 
 namespace KarolNet\IPressoApiBundle\Tests;
 
-use KarolNet\IPressoApiBundle\Service\IPressoApi;
+use KarolNet\IPressoApiBundle\IPressoIntegration\IPressoApi;
 
 class IPressoApiTest extends \PHPUnit_Framework_TestCase
 {

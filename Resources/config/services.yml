@@ -1,6 +1,6 @@
 services:
   karolne.ipresso_api:
-      class: KarolNet\IPressoApiBundle\Service\IPressoApi
+      class: KarolNet\IPressoApiBundle\IPressoIntegration\IPressoApi
       arguments:
           - "%ipresso_customer_key%"
           - "%ipresso_login%"
