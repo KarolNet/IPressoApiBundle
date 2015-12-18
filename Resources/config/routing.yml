@@ -1,3 +1,0 @@
-i_presso_api_homepage:
-    path:     /
-    defaults: { _controller: IPressoApiBundle:Default:index }
