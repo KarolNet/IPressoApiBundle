@@ -19,13 +19,24 @@ class IPressoApiTest extends \PHPUnit_Framework_TestCase
     /** @var  \KarolNet\IPressoApiBundle\IPressoIntegration\IPressoApiInterface */
     private $iPressoApi;
 
-    public function testAuthenticate()
+    public function testSuccessAuthenticate()
     {
         $this->thereIsSuccessFullIPressoApiResponse();
         $iPressoApi = new IPressoApi('foobar', 'login', 'pass', 'http://localhost', $this->guzzleClient);
         $token = $iPressoApi->accessToken();
         $this->assertEquals($token, 'access-token');
     }
+
+    /**
+     * @expectedException \Exception
+     */
+    public function testFailedAuthenticate()
+    {
+        $this->thereIsBadIPressoApiResponse();
+        $iPressoApi = new IPressoApi('foobar', 'login', 'pass', 'http://localhost', $this->guzzleClient);
+        $iPressoApi->accessToken();
+    }
+
 
     /** {@inheritdoc} */
     protected function setUp()
@@ -44,6 +55,14 @@ class IPressoApiTest extends \PHPUnit_Framework_TestCase
     private function thereIsSuccessFullIPressoApiResponse()
     {
         $body = ['code'=> 200, 'data' => 'access-token', 'message' => 'OK'];
+        $response = $this->mockResponse(200, json_encode($body));
+        $handler = HandlerStack::create($response);
+        $this->guzzleClient = new Client(['handler' => $handler]);
+    }
+
+    private function thereIsBadIPressoApiResponse()
+    {
+        $body = ['code'=> 200, 'message' => 'NOT_OK'];
         $response = $this->mockResponse(200, json_encode($body));
         $handler = HandlerStack::create($response);
         $this->guzzleClient = new Client(['handler' => $handler]);
