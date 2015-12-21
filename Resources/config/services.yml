@@ -1,4 +1,7 @@
 services:
+  karolnet.guzzle_clinet:
+      class: GuzzleHttp\Client
+
   karolne.ipresso_api:
       class: KarolNet\IPressoApiBundle\IPressoIntegration\IPressoApi
       arguments:
@@ -6,3 +9,4 @@ services:
           - "%ipresso_login%"
           - "%ipresso_password%"
           - "%ipresso_host%"
+          - "@karolnet.guzzle_clinet"
