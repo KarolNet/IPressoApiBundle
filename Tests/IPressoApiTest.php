@@ -7,9 +7,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7;
-use GuzzleHttp\Exception\RequestException;
 
 class IPressoApiTest extends \PHPUnit_Framework_TestCase
 {
@@ -22,9 +20,7 @@ class IPressoApiTest extends \PHPUnit_Framework_TestCase
     public function testSuccessAuthenticate()
     {
         $this->thereIsSuccessFullIPressoApiResponse();
-        $iPressoApi = new IPressoApi('foobar', 'login', 'pass', 'http://localhost', $this->guzzleClient);
-        $token = $iPressoApi->accessToken();
-        $this->assertEquals($token, 'access-token');
+        $this->thenIcanAuthenticate();
     }
 
     /**
@@ -33,10 +29,8 @@ class IPressoApiTest extends \PHPUnit_Framework_TestCase
     public function testFailedAuthenticate()
     {
         $this->thereIsBadIPressoApiResponse();
-        $iPressoApi = new IPressoApi('foobar', 'login', 'pass', 'http://localhost', $this->guzzleClient);
-        $iPressoApi->accessToken();
+        $this->thenIcantAuthenticate();
     }
-
 
     /** {@inheritdoc} */
     protected function setUp()
@@ -50,6 +44,19 @@ class IPressoApiTest extends \PHPUnit_Framework_TestCase
         $this->guzzleClient = null;
         $this->iPressoApi = null;
         parent::tearDown();
+    }
+
+    private function thenIcanAuthenticate()
+    {
+        $iPressoApi = new IPressoApi('foobar', 'login', 'pass', 'http://localhost', $this->guzzleClient);
+        $token = $iPressoApi->accessToken();
+        $this->assertEquals($token, 'access-token');
+    }
+
+    private function thenIcantAuthenticate()
+    {
+        $iPressoApi = new IPressoApi('foobar', 'login', 'pass', 'http://localhost', $this->guzzleClient);
+        $iPressoApi->accessToken();
     }
 
     private function thereIsSuccessFullIPressoApiResponse()
