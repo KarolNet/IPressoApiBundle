@@ -3,7 +3,7 @@
 namespace KarolNet\IPressoApiBundle\IPressoIntegration;
 
 use GuzzleHttp\ClientInterface;
-use KarolNet\Model\IPressoContactInterface;
+use KarolNet\Contact\IPressoContactInterface;
 
 class IPressoApi implements IPressoApiInterface
 {

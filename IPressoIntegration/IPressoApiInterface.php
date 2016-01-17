@@ -3,7 +3,7 @@
 namespace KarolNet\IPressoApiBundle\IPressoIntegration;
 
 
-use KarolNet\Model\IPressoContactInterface;
+use KarolNet\Contact\IPressoContactInterface;
 
 interface IPressoApiInterface
 {

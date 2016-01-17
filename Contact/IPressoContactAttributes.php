@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: karol
- * Date: 12.12.15
- * Time: 23:51
- */
 
-namespace KarolNet\Model;
+namespace KarolNet\Contact;
 
 
 class IPressoContactAttributes
