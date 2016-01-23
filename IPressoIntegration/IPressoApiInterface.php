@@ -3,7 +3,7 @@
 namespace KarolNet\IPressoApiBundle\IPressoIntegration;
 
 
-use KarolNet\Contact\IPressoContactInterface;
+use KarolNet\IPressoApiBundle\Contact\IPressoContactInterface;
 
 interface IPressoApiInterface
 {
@@ -15,16 +15,17 @@ interface IPressoApiInterface
     /**
      * @param string $email
      * @param string $token
-     * @return IPressoContactInterface
+     * @return array
      */
     public function findContact($email, $token);
 
-    /**
+    /**kwinkwin
+     *
      * @param IPressoContactInterface $contact
      * @param string $token
      * @return boolean
      */
-    public function addContact(IPressoContactInterface $contact, $token);
+    public function addContact(\ArrayAccess $contact, $token);
 
     /**
      * @param int $contactId

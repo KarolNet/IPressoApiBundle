@@ -9,7 +9,6 @@
       "email": "karol.grochowalski@gmail.com"
     }
   ],
-  "minimum-stability": "dev",
   "require": {
     "php": ">=5.3.3",
     "guzzlehttp/guzzle": "^6.1"

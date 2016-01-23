@@ -1,6 +1,6 @@
 <?php
 
-namespace KarolNet\Contact;
+namespace KarolNet\IPressoApiBundle\Contact;
 
 interface IPressoContactInterface
 {

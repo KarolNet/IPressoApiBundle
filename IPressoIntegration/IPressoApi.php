@@ -3,7 +3,9 @@
 namespace KarolNet\IPressoApiBundle\IPressoIntegration;
 
 use GuzzleHttp\ClientInterface;
-use KarolNet\Contact\IPressoContactInterface;
+use KarolNet\IPressoApiBundle\Contact\IPressoContactInterface;
+use GuzzleHttp\RequestOptions;
+use GuzzleHttp\Exception\RequestException;
 
 class IPressoApi implements IPressoApiInterface
 {
@@ -33,16 +35,12 @@ class IPressoApi implements IPressoApiInterface
 
     public function accessToken()
     {
-        $headers = ['ACCEPT: text/json', 'USER_AGENT: iPresso'];
-
-        $res = $this->client->request('GET', $this->host . '/api/2/auth/' .$this->apiCustomerKey, [
-            'auth' => [$this->login, $this->password],
-            'headers' => $headers
+        $response = $this->client->request('GET', $this->host . 'api/2/auth/' . $this->apiCustomerKey, [
+            RequestOptions::AUTH => [$this->login, $this->password],
+            RequestOptions::HEADERS => $this->getHeaders()
         ]);
 
-        $content =  $res->getBody()->getContents();
-
-        $contentArray = json_decode($content, true);
+        $contentArray = json_decode($response->getBody()->getContents(), TRUE);
 
         if ($contentArray['code'] == 200 && $contentArray['message'] == 'OK') {
             return $contentArray['data'];
@@ -54,17 +52,46 @@ class IPressoApi implements IPressoApiInterface
     /**
      * {@inheritdoc}
      */
-    public function findContact($email, $token)
+    public function findContact($email, $accessToken)
     {
-        // TODO: Implement findContact() method.
+        $url = $this->host . '/api/2/contact/search';
+        try {
+            $response = $this->client->request('POST', $url, [
+                RequestOptions::HEADERS => $this->getHeaders($accessToken),
+                RequestOptions::FORM_PARAMS  => [
+                    'contact' => [
+                        'email' => $email
+                    ]
+                ]
+            ]);
+        } catch (RequestException $e) {
+            return null;
+        }
+
+        return json_decode($response->getBody()->getContents(), TRUE);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addContact(IPressoContactInterface $contact, $accessToken)
+    public function addContact(\ArrayAccess $contact, $accessToken)
     {
-        // TODO: Implement findContact() method.
+        $uri = $this->host . '/api/2/contact/';
+
+        $contactData = [];
+        $contactData['contact'][] = (array) $contact;
+
+        try {
+            $response = $this->client->request('POST', $uri, [
+                    RequestOptions::HEADERS => $this->getHeaders($accessToken),
+                    RequestOptions::FORM_PARAMS => $contactData
+                ]
+            );
+        } catch(RequestException $e) {
+            return null;
+        }
+
+        return json_decode($response->getBody()->getContents(), TRUE);
     }
 
     /**
@@ -73,5 +100,20 @@ class IPressoApi implements IPressoApiInterface
     public function updateContact($contactId, IPressoContactInterface $contact, $token)
     {
         // TODO: Implement findContact() method.
+    }
+
+    private function getHeaders($accessToken = null)
+    {
+        $headers = [
+            'ACCEPT' => 'text/json',
+            'USER_AGENT' => 'iPresso',
+            'IPRESSO_TOKEN' => $accessToken
+        ];
+
+        if ($accessToken) {
+            $headers['IPRESSO_TOKEN'] =  $accessToken;
+        }
+
+        return $headers;
     }
 }

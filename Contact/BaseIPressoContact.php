@@ -1,20 +1,28 @@
 <?php
 
-namespace KarolNet\Contact;
+namespace KarolNet\IPressoApiBundle\Contact;
 
-class BaseIPressoContact implements IPressoContactInterface
+class BaseIPressoContact implements IPressoContactInterface, \ArrayAccess
 {
     /** @var  string */
-    protected $lname;
+    public $lname;
 
     /** @var  string */
-    protected $name;
+    public $name;
 
     /** @var  string */
-    protected $email;
+    public $email;
 
     /** @var  string */
-    protected $mobile;
+    public $mobile;
+
+    public function __construct($lname, $name, $email, $mobile)
+    {
+        $this->lname = $lname;
+        $this->name = $name;
+        $this->email = $email;
+        $this->mobile = $mobile;
+    }
 
     /**
      * @return string
@@ -78,5 +86,25 @@ class BaseIPressoContact implements IPressoContactInterface
     public function setMobile($mobile)
     {
         $this->mobile = $mobile;
+    }
+
+    public function offsetExists($offset)
+    {
+        return isset($this->$offset);
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        $this->$offset = $value;
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->$offset;
+    }
+
+    public function offsetUnset($offset)
+    {
+        $this->$offset = null;
     }
 }
