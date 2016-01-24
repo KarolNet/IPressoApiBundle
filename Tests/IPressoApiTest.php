@@ -2,6 +2,7 @@
 
 namespace KarolNet\IPressoApiBundle\Tests;
 
+use KarolNet\IPressoApiBundle\Contact\BaseIPressoContact;
 use KarolNet\IPressoApiBundle\IPressoIntegration\IPressoApi;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
@@ -44,6 +45,12 @@ class IPressoApiTest extends \PHPUnit_Framework_TestCase
         $this->thenClientNotFound();
     }
 
+    public function testUpdateContact()
+    {
+        $this->thereIsClientUpdateResponse();
+        $this->thenClientUpdate();
+    }
+
     /** {@inheritdoc} */
     protected function setUp()
     {
@@ -56,6 +63,19 @@ class IPressoApiTest extends \PHPUnit_Framework_TestCase
         $this->guzzleClient = null;
         $this->iPressoApi = null;
         parent::tearDown();
+    }
+
+    private function thereIsClientUpdateResponse()
+    {
+        $this->setGuzzleClientResponse(303, '{"code":303,"data":{"id":26416,"monitoringCode":""},"message":"Not Change - the same contact already exists","errorCode":1 }');
+    }
+
+    private function thenClientUpdate()
+    {
+        $contact = new BaseIPressoContact('aaa', 'b','c', 'd');
+        $iPressoApi = $this->getIPressoApi();
+        $response = $iPressoApi->updateContact(26416, $contact, 'token');
+        $this->assertEquals(303, $response['code']);
     }
 
     private function thenIcanAuthenticate()
