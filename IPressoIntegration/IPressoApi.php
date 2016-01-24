@@ -74,17 +74,14 @@ class IPressoApi implements IPressoApiInterface
     /**
      * {@inheritdoc}
      */
-    public function addContact(\ArrayAccess $contact, $accessToken)
+    public function addContact(IPressoContactInterface $contact, $accessToken)
     {
         $uri = $this->host . '/api/2/contact/';
-
-        $contactData = [];
-        $contactData['contact'][] = (array) $contact;
 
         try {
             $response = $this->client->request('POST', $uri, [
                     RequestOptions::HEADERS => $this->getHeaders($accessToken),
-                    RequestOptions::FORM_PARAMS => $contactData
+                    RequestOptions::FORM_PARAMS => $this->getContactData($contact)
                 ]
             );
         } catch(RequestException $e) {
@@ -97,9 +94,29 @@ class IPressoApi implements IPressoApiInterface
     /**
      * {@inheritdoc}
      */
-    public function updateContact($contactId, IPressoContactInterface $contact, $token)
+    public function updateContact($contactId, IPressoContactInterface $contact, $accessToken)
     {
-        // TODO: Implement findContact() method.
+        $uri = $this->host . '/api/2/contact/' . $contactId;
+
+        try {
+            $response = $this->client->request('POST', $uri, [
+                    RequestOptions::HEADERS => $this->getHeaders($accessToken),
+                    RequestOptions::FORM_PARAMS => $this->getContactData($contact)
+                ]
+            );
+        } catch(RequestException $e) {
+            return null;
+        }
+
+        return json_decode($response->getBody()->getContents(), TRUE);
+    }
+
+    private function getContactData(IPressoContactInterface $contact)
+    {
+        $contactData = [];
+        $contactData['contact'][] = (array) $contact;
+
+        return $contactData;
     }
 
     private function getHeaders($accessToken = null)
