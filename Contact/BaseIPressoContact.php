@@ -2,7 +2,7 @@
 
 namespace KarolNet\IPressoApiBundle\Contact;
 
-class BaseIPressoContact implements IPressoContactInterface, \ArrayAccess
+class BaseIPressoContact implements IPressoContactInterface
 {
     /** @var  string */
     public $lname;

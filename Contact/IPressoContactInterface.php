@@ -2,7 +2,7 @@
 
 namespace KarolNet\IPressoApiBundle\Contact;
 
-interface IPressoContactInterface
+interface IPressoContactInterface extends \ArrayAccess
 {
     /** @return string */
     public function getLname();
