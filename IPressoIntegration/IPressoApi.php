@@ -111,6 +111,25 @@ class IPressoApi implements IPressoApiInterface
         return json_decode($response->getBody()->getContents(), TRUE);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function fetchContact($contactId, $accessToken)
+    {
+        $uri = $this->host . '/api/2/contact/' . $contactId;
+
+        try {
+            $response = $this->client->request('GET', $uri, [
+                    RequestOptions::HEADERS => $this->getHeaders($accessToken)
+                ]
+            );
+        } catch (RequestException $e) {;
+            return null;
+        }
+
+        return json_decode($response->getBody()->getContents(), TRUE);
+    }
+
     private function getContactData(IPressoContactInterface $contact)
     {
         $contactData = [];

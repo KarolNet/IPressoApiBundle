@@ -33,4 +33,11 @@ interface IPressoApiInterface
      * @return boolean
      */
     public function updateContact($contactId, IPressoContactInterface $contact, $token);
+
+    /**
+     * @param $contactId
+     * @param $accessToken
+     * @return mixed
+     */
+    public function fetchContact($contactId, $accessToken);
 }

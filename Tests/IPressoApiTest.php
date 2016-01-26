@@ -51,6 +51,12 @@ class IPressoApiTest extends \PHPUnit_Framework_TestCase
         $this->thenClientUpdate();
     }
 
+    public function testFetchContact()
+    {
+        $this->thereIsContactIdAndIHaveFetchDataForIt();
+        $this->thenDataIsFetched();
+    }
+
     /** {@inheritdoc} */
     protected function setUp()
     {
@@ -63,6 +69,43 @@ class IPressoApiTest extends \PHPUnit_Framework_TestCase
         $this->guzzleClient = null;
         $this->iPressoApi = null;
         parent::tearDown();
+    }
+
+    private function thereIsContactIdAndIHaveFetchDataForIt()
+    {
+        $this->setGuzzleClientResponse(200, '{"code":200,"data":{"contact":{
+                  "idContact":26413,
+                  "fname":"Jan",
+                  "lname":"Kowalski",
+                  "vocative":"Janie",
+                  "name":"Janek",
+                  "email":"jan.kowalski@email.com",
+                  "invalidEmail":"0",
+                  "phone":"3223456789",
+                  "mobile":"123456789",
+                  "postCode":"40-402",
+                  "street":"",
+                  "buildingNumber":"",
+                  "flatNumber":"",
+                  "city":"Katowice",
+                  "country":"Poland",
+                  "www":"http://www.example.pl",
+                  "workPosition":"",
+                  "company":"",
+                  "createDate":"2015-02-26 10:49:40",
+                  "modifyTime":"2015-03-05 07:52:42",
+                  "leadScoring":"3",
+                  "type":false,
+                  "sex":4,
+                  "shoes_size":false,
+                  "agreement":{"2":"Agreement name 1", "4":"Agreement name 2","36":"Agreement name 3"},
+                  "contactMonitoringIframe":""}},"message":"OK"}');
+    }
+
+    private function thenDataIsFetched()
+    {
+        $iPressoApi = $this->getIPressoApi();
+        $this->assertEquals('26413', $iPressoApi->fetchContact('26413', 'ssss')['data']['contact']['idContact']);
     }
 
     private function thereIsClientUpdateResponse()
