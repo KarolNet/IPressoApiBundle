@@ -2,7 +2,7 @@
 
 namespace KarolNet\IPressoApiBundle\Tests;
 
-use KarolNet\IPressoApiBundle\Contact\BaseIPressoContact;
+use KarolNet\IPressoApiBundle\Contact\IPressoContact;
 use KarolNet\IPressoApiBundle\IPressoIntegration\IPressoApi;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
@@ -72,7 +72,7 @@ class IPressoApiTest extends \PHPUnit_Framework_TestCase
 
     private function thenClientUpdate()
     {
-        $contact = new BaseIPressoContact('aaa', 'b','c', 'd');
+        $contact = new IPressoContact('aaa', 'b','c', 'd');
         $iPressoApi = $this->getIPressoApi();
         $response = $iPressoApi->updateContact(26416, $contact, 'token');
         $this->assertEquals(303, $response['code']);

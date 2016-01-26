@@ -2,8 +2,10 @@
 
 namespace KarolNet\IPressoApiBundle\Contact;
 
-class BaseIPressoContact implements IPressoContactInterface
+class IPressoContact implements IPressoContactInterface
 {
+    public $type;
+
     /** @var  string */
     public $lname;
 
@@ -15,6 +17,39 @@ class BaseIPressoContact implements IPressoContactInterface
 
     /** @var  string */
     public $mobile;
+
+    /** @var  string */
+    public $phone;
+
+    /** @var  string */
+    public $company;
+
+    /** @var  string */
+    public $city;
+
+    /** @var  string */
+    public $postalCode;
+
+    /** @var  string */
+    public $street;
+
+    /** @var  string */
+    public $buildingNumber;
+
+    /** @var  string */
+    public $flatNumber;
+
+    /** @var  string */
+    public $country;
+
+    /** @var  array */
+    public $category;
+
+    /** @var  array */
+    public $tag;
+
+    /** @var  array */
+    public $agreement;
 
     public function __construct($lname, $name, $email, $mobile)
     {
