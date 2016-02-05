@@ -57,6 +57,12 @@ class IPressoApiTest extends \PHPUnit_Framework_TestCase
         $this->thenDataIsFetched();
     }
 
+    public function testDeleteContact()
+    {
+        $this->thereIsDeleteContactResponse();
+        $this->thenContactIsDeleted();
+    }
+
     /** {@inheritdoc} */
     protected function setUp()
     {
@@ -69,6 +75,17 @@ class IPressoApiTest extends \PHPUnit_Framework_TestCase
         $this->guzzleClient = null;
         $this->iPressoApi = null;
         parent::tearDown();
+    }
+
+    private function thereIsDeleteContactResponse()
+    {
+        $this->setGuzzleClientResponse(200, '{"code":200,"data":true,"message":"OK"}');
+    }
+
+    private function thenContactIsDeleted()
+    {
+        $iPressoApi = $this->getIPressoApi();
+        $this->assertEquals('OK', $iPressoApi->deleteContact('26413', 'token')['message']);
     }
 
     private function thereIsContactIdAndIHaveFetchDataForIt()

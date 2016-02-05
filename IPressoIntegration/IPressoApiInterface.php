@@ -40,4 +40,11 @@ interface IPressoApiInterface
      * @return mixed
      */
     public function fetchContact($contactId, $accessToken);
+
+    /**
+     * @param $contactId
+     * @param $accessToken
+     * @return mixed
+     */
+    public function deleteContact($contactId, $accessToken);
 }

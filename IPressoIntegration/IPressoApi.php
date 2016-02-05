@@ -35,10 +35,11 @@ class IPressoApi implements IPressoApiInterface
 
     public function accessToken()
     {
-        $response = $this->client->request('GET', $this->host . 'api/2/auth/' . $this->apiCustomerKey, [
-            RequestOptions::AUTH => [$this->login, $this->password],
-            RequestOptions::HEADERS => $this->getHeaders()
-        ]);
+        $uri = $this->host . 'api/2/auth/' . $this->apiCustomerKey;
+        $response = $this->client->request('GET', $uri, [
+                RequestOptions::AUTH => [$this->login, $this->password],
+                RequestOptions::HEADERS => $this->getHeaders()
+            ]);
 
         $contentArray = json_decode($response->getBody()->getContents(), TRUE);
 
@@ -120,6 +121,25 @@ class IPressoApi implements IPressoApiInterface
 
         try {
             $response = $this->client->request('GET', $uri, [
+                    RequestOptions::HEADERS => $this->getHeaders($accessToken)
+                ]
+            );
+        } catch (RequestException $e) {;
+            return null;
+        }
+
+        return json_decode($response->getBody()->getContents(), TRUE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteContact($contactId, $accessToken)
+    {
+        $uri = $this->host . '/api/2/contact/' . $contactId;
+
+        try {
+            $response = $this->client->request('DELETE', $uri, [
                     RequestOptions::HEADERS => $this->getHeaders($accessToken)
                 ]
             );
